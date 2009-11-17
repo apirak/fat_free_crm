@@ -58,6 +58,7 @@ class CampaignsController < ApplicationController
   def new
     @campaign = Campaign.new(:user => @current_user)
     @users = User.except(@current_user).all
+    logger.debug("\n\n\n\n #{@campaign.status.inspect} \n\n\n")
     if params[:related]
       model, id = params[:related].split("_")
       instance_variable_set("@#{model}", model.classify.constantize.find(id))

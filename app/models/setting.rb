@@ -61,7 +61,7 @@ class Setting < ActiveRecord::Base
   # string it gets copied without translation.
   #-------------------------------------------------------------------
   def self.unroll(setting)
-    send(setting).map { |key| [ key.is_a?(Symbol) ? I18n.t(key) : key, key.to_sym ] }
+    send(setting).map { |key| [ key.first.is_a?(Symbol) ? I18n.t(key.first) : key, key.first.to_sym ] }
   end
 
 end
