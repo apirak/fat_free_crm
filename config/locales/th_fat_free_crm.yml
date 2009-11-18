@@ -3,7 +3,7 @@ th:
   # Generic terms
   #----------------------------------------------------------------------------
   all: ทั้งหมด
-  language: ไทย
+  language: Thai
   not_implemented: อยู่ระหว่างการพัฒนา.
 
   # Settings
