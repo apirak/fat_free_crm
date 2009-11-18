@@ -3,8 +3,8 @@
   - Setting.campaign_status.each do |key|
     .check_box{:style => "border-bottom: 1px silver dotted;"}
       %div{:style => "float:right;"}
-        = @campaign_status_total[key.first]
-      = campaign_status_checbox(key.first, @campaign_status_total[key.first]) << " " << t("campaign_checkbox_#{key.first}")
+        = @campaign_status_total[key]
+      = campaign_status_checbox(key, @campaign_status_total[key]) << " " << t("campaign_checkbox_#{key}")
 
   .check_box{:style => "border-bottom: 1px silver dotted;"}
     %div{:style => "float:right;"}

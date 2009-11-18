@@ -326,8 +326,8 @@ class LeadsController < ApplicationController
     else
       @lead_status_total = { :all => Lead.my(@current_user).count, :other => 0 }
       Setting.lead_status.each do |key|
-        @lead_status_total[key.first] = Lead.my(@current_user).count(:conditions => [ "status=?", key.first.to_s ])
-        @lead_status_total[:other] -= @lead_status_total[key.first]
+        @lead_status_total[key] = Lead.my(@current_user).count(:conditions => [ "status=?", key.to_s ])
+        @lead_status_total[:other] -= @lead_status_total[key]
       end
       @lead_status_total[:other] += @lead_status_total[:all]
     end
