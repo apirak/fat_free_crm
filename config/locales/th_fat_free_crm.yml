@@ -404,15 +404,15 @@ th:
   
   # views/home:
   #----------------------------------------------------------------------------
-  action_created: สร้างแล้ว
-  action_updated: แก้ไขแล้ว
-  action_deleted: ลบแล้ว
-  action_completed: เสร็จเรียบร้อยแล้ว
+  action_created: สร้าง
+  action_updated: แก้ไข
+  action_deleted: ลบ
+  action_completed: เสร็จสมบูรณ์
   action_rejected: ยกเลิกแล้ว
-  action_commented: ใส่คำแนะนำแล้ว
-  action_reassigned: reassigned
-  action_rescheduled: ใส่กำหนดการแล้ว
-  action_viewed: แสดงแล้ว
+  action_commented: ใส่คำแนะนำ
+  action_reassigned: มอบหมายให้คนอื่น
+  action_rescheduled: ใส่กำหนดการ
+  action_viewed: แสดง
   subject_task: ภารกิจ
   subject_campaign: แคมเปญ
   subject_lead: ผู้สนใจ
