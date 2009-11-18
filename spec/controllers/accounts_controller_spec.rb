@@ -61,7 +61,7 @@ describe AccountsController do
     describe "with mime type of HTML" do
       before(:each) do
         @account = Factory(:account, :user => @current_user)
-        @stage = Setting.as_hash(:opportunity_stage)
+        @stage = Setting.unroll(:opportunity_stage)
         @comment = Comment.new
       end
 
@@ -82,7 +82,7 @@ describe AccountsController do
     describe "with mime type of XML" do
       it "should render the requested account as xml" do
         @account = Factory(:account, :user => @current_user)
-        @stage = Setting.as_hash(:opportunity_stage)
+        @stage = Setting.unroll(:opportunity_stage)
         request.env["HTTP_ACCEPT"] = "application/xml"
 
         get :show, :id => @account.id
@@ -436,13 +436,13 @@ describe AccountsController do
   describe "responding to GET options" do
     it "should set current user preferences when showing options" do
       @per_page = Factory(:preference, :user => @current_user, :name => "accounts_per_page", :value => Base64.encode64(Marshal.dump(42)))
-      @outline  = Factory(:preference, :user => @current_user, :name => "accounts_outline",  :value => Base64.encode64(Marshal.dump("long")))
+      @outline  = Factory(:preference, :user => @current_user, :name => "accounts_outline",  :value => Base64.encode64(Marshal.dump("option_long")))
       @sort_by  = Factory(:preference, :user => @current_user, :name => "accounts_sort_by",  :value => Base64.encode64(Marshal.dump("accounts.name ASC")))
 
       xhr :get, :options
       assigns[:per_page].should == 42
-      assigns[:outline].should  == "long"
-      assigns[:sort_by].should  == "name"
+      assigns[:outline].should  == "option_long"
+      assigns[:sort_by].should  == "accounts.name ASC"
     end
 
     it "should not assign instance variables when hiding options" do

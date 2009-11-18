@@ -65,6 +65,7 @@ class Lead < ActiveRecord::Base
   uses_user_permissions
   acts_as_commentable
   acts_as_paranoid
+  sortable :by => [ "first_name ASC", "last_name ASC", "company ASC", "rating DESC", "created_at DESC", "updated_at DESC" ], :default => "created_at DESC"
 
   validates_presence_of :first_name, :message => "^Please specify first name."
   validates_presence_of :last_name, :message => "^Please specify last name."
@@ -73,21 +74,11 @@ class Lead < ActiveRecord::Base
   after_create  :increment_leads_count
   after_destroy :decrement_leads_count
 
-  SORT_BY = {
-    "first name"   => "leads.first_name ASC",
-    "last name"    => "leads.last_name ASC",
-    "company"      => "leads.company ASC",
-    "rating"       => "leads.rating DESC",
-    "date created" => "leads.created_at DESC",
-    "date updated" => "leads.updated_at DESC"
-  }
-
   # Default values provided through class methods.
   #----------------------------------------------------------------------------
-  def self.per_page ;  20                      ; end
-  def self.outline  ;  "long"                  ; end
-  def self.sort_by  ;  "leads.created_at DESC" ; end
-  def self.first_name_position ;  "before"     ; end
+  def self.per_page ; 20                  ; end
+  def self.outline  ; "long"              ; end
+  def self.first_name_position ; "before" ; end
 
   # Save the lead along with its permissions.
   #----------------------------------------------------------------------------

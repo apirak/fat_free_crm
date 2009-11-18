@@ -40,7 +40,7 @@ class CampaignsController < ApplicationController
   #----------------------------------------------------------------------------
   def show
     @campaign = Campaign.my(@current_user).find(params[:id])
-    @stage = Setting.as_hash(:opportunity_stage)
+    @stage = Setting.unroll(:opportunity_stage)
     @comment = Comment.new
 
     respond_to do |format|
@@ -164,7 +164,6 @@ class CampaignsController < ApplicationController
       @per_page = @current_user.pref[:campaigns_per_page] || Campaign.per_page
       @outline  = @current_user.pref[:campaigns_outline]  || Campaign.outline
       @sort_by  = @current_user.pref[:campaigns_sort_by]  || Campaign.sort_by
-      @sort_by  = Campaign::SORT_BY.invert[@sort_by]
     end
   end
 
@@ -173,7 +172,7 @@ class CampaignsController < ApplicationController
   def redraw
     @current_user.pref[:campaigns_per_page] = params[:per_page] if params[:per_page]
     @current_user.pref[:campaigns_outline]  = params[:outline]  if params[:outline]
-    @current_user.pref[:campaigns_sort_by]  = Campaign::SORT_BY[params[:sort_by]] if params[:sort_by]
+    @current_user.pref[:campaigns_sort_by]  = Campaign::sort_by_map[params[:sort_by]] if params[:sort_by]
     @campaigns = get_campaigns(:page => 1)
     render :action => :index
   end
@@ -234,7 +233,7 @@ class CampaignsController < ApplicationController
   #----------------------------------------------------------------------------
   def get_data_for_sidebar
     @campaign_status_total = { :all => Campaign.my(@current_user).count, :other => 0 }
-    Setting.campaign_status.keys.each do |key|
+    Setting.campaign_status.each do |key|
       @campaign_status_total[key] = Campaign.my(@current_user).count(:conditions => [ "status=?", key.to_s ])
       @campaign_status_total[:other] -= @campaign_status_total[key]
     end

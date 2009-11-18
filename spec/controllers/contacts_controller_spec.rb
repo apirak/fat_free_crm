@@ -64,7 +64,7 @@ describe ContactsController do
     describe "with mime type of HTML" do
       before(:each) do
         @contact = Factory(:contact, :id => 42)
-        @stage = Setting.as_hash(:opportunity_stage)
+        @stage = Setting.unroll(:opportunity_stage)
         @comment = Comment.new
       end
 
@@ -568,15 +568,15 @@ describe ContactsController do
   describe "responding to GET options" do
     it "should set current user preferences when showing options" do
       @per_page = Factory(:preference, :user => @current_user, :name => "contacts_per_page", :value => Base64.encode64(Marshal.dump(42)))
-      @outline  = Factory(:preference, :user => @current_user, :name => "contacts_outline",  :value => Base64.encode64(Marshal.dump("long")))
+      @outline  = Factory(:preference, :user => @current_user, :name => "contacts_outline",  :value => Base64.encode64(Marshal.dump("option_long")))
       @sort_by  = Factory(:preference, :user => @current_user, :name => "contacts_sort_by",  :value => Base64.encode64(Marshal.dump("contacts.first_name ASC")))
-      @naming   = Factory(:preference, :user => @current_user, :name => "contacts_naming",   :value => Base64.encode64(Marshal.dump("after")))
+      @naming   = Factory(:preference, :user => @current_user, :name => "contacts_naming",   :value => Base64.encode64(Marshal.dump("option_after")))
 
       xhr :get, :options
       assigns[:per_page].should == 42
-      assigns[:outline].should  == "long"
-      assigns[:sort_by].should  == "first name"
-      assigns[:naming].should   == "after"
+      assigns[:outline].should  == "option_long"
+      assigns[:sort_by].should  == "contacts.first_name ASC"
+      assigns[:naming].should   == "option_after"
     end
 
     it "should not assign instance variables when hiding options" do
@@ -592,7 +592,7 @@ describe ContactsController do
   #----------------------------------------------------------------------------
   describe "responding to POST redraw" do
     it "should save user selected contact preference" do
-      xhr :post, :redraw, :per_page => 42, :outline => "long", :sort_by => "first name", :naming => "after"
+      xhr :post, :redraw, :per_page => 42, :outline => "long", :sort_by => "first_name", :naming => "after"
       @current_user.preference[:contacts_per_page].should == "42"
       @current_user.preference[:contacts_outline].should  == "long"
       @current_user.preference[:contacts_sort_by].should  == "contacts.first_name ASC"
@@ -600,13 +600,13 @@ describe ContactsController do
     end
 
     it "should set similar options for Leads" do
-      xhr :post, :redraw, :sort_by => "first name", :naming => "after"
+      xhr :post, :redraw, :sort_by => "first_name", :naming => "after"
       @current_user.pref[:leads_sort_by].should == "leads.first_name ASC"
       @current_user.pref[:leads_naming].should == "after"
     end
 
     it "should reset current page to 1" do
-      xhr :post, :redraw, :per_page => 42, :outline => "long", :sort_by => "first name", :naming => "after"
+      xhr :post, :redraw, :per_page => 42, :outline => "long", :sort_by => "first_name", :naming => "after"
       session[:contacts_current_page].should == 1
     end
 
@@ -616,7 +616,7 @@ describe ContactsController do
         Factory(:contact, :first_name => "Bobby", :user => @current_user)
       ]
 
-      xhr :post, :redraw, :per_page => 1, :sort_by => "first name"
+      xhr :post, :redraw, :per_page => 1, :sort_by => "first_name"
       assigns(:contacts).should == [ @contacts.first ]
       response.should render_template("contacts/index")
     end

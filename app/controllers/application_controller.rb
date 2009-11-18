@@ -34,6 +34,11 @@ class ApplicationController < ActionController::Base
   def set_context
     ActiveSupport::TimeZone[session[:timezone_offset]] if session[:timezone_offset]
     ActionMailer::Base.default_url_options[:host] = request.host_with_port
+    I18n.locale = Setting.locale if Setting.locale
+
+    # HACK: this is a temporary hack until we add :locale attribute to User model.
+    # session[:locale] = params[:lang] unless params[:lang].blank?
+    # I18n.locale = session[:locale]
   end
 
   #----------------------------------------------------------------------------
@@ -53,6 +58,9 @@ class ApplicationController < ActionController::Base
   #----------------------------------------------------------------------------
   def current_user
     @current_user ||= (current_user_session && current_user_session.record)
+    if @current_user && @current_user.preference[:locale]
+      I18n.locale = @current_user.preference[:locale]
+    end
     User.current_user = @current_user
   end
   

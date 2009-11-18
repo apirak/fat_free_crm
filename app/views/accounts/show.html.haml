@@ -2,8 +2,8 @@
 
 #confirm{ hidden }
 .title_tools#menu
-  = link_to_inline(:edit_account, edit_account_path(@account), :text => "Edit") + " | "
-  = link_to_function("Delete?", confirm_delete(@account))
+  = link_to_inline(:edit_account, edit_account_path(@account), :text => t(:edit)) + " | "
+  = link_to_function(t:delete, confirm_delete(@account))
 .title#edit_account_title= @account.name
 
 %div#edit_account{ hidden }
@@ -13,24 +13,24 @@
 
 -#-----------------------------------------------------------------------------
 %br
-= inline :create_task, new_task_path, { :class => "subtitle_tools", :related => dom_id(@account) }
-.subtitle#create_task_title Tasks
+= inline :create_task, new_task_path, { :class => "subtitle_tools", :related => dom_id(@account), :text=> t(:create_task) }
+.subtitle#create_task_title #{t:tasks}
 .remote#create_task{ hidden }
 .log#tasks
   = render :partial => "common/tasks"
 
 -#-----------------------------------------------------------------------------
 %br
-= inline :create_contact, new_contact_path, { :class => "subtitle_tools", :related => dom_id(@account) }
-.subtitle#create_contact_title Contacts
+= inline :create_contact, new_contact_path, { :class => "subtitle_tools", :related => dom_id(@account), :text=> t(:create_contact) }
+.subtitle#create_contact_title #{t:contacts}
 .remote#create_contact{ hidden }
 .list#contacts
   = render :partial => "contacts/contact", :collection => @account.contacts
 
 -#-----------------------------------------------------------------------------
 %br
-= inline :create_opportunity, new_opportunity_path, { :class => "subtitle_tools", :related => dom_id(@account) }
-.subtitle#create_opportunity_title Opportunities
+= inline :create_opportunity, new_opportunity_path, { :class => "subtitle_tools", :related => dom_id(@account), :text=> t(:create_opportunity) }
+.subtitle#create_opportunity_title #{t:opportunities}
 .remote#create_opportunity{ hidden }
 .list#opportunities
   = render :partial => "opportunities/opportunity", :collection => @account.opportunities

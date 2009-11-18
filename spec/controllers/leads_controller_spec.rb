@@ -33,7 +33,7 @@ describe LeadsController do
       @status = Setting.lead_status
 
       get :index
-      (assigns[:lead_status_total].keys - (@status.keys << :all << :other)).should == []
+      (assigns[:lead_status_total].keys - (@status << :all << :other)).should == []
     end
 
     it "should filter out leads by status" do
@@ -688,7 +688,7 @@ describe LeadsController do
       assigns[:accounts].should == [ @account ]
       assigns[:opportunity].should == @opportunity
       assigns[:contact].should == @contact
-      assigns[:stage].should be_instance_of(Hash)
+      assigns[:stage].should be_instance_of(Array)
       response.should render_template("leads/promote")
     end
 
@@ -911,15 +911,15 @@ describe LeadsController do
   describe "responding to GET options" do
     it "should set current user preferences when showing options" do
       @per_page = Factory(:preference, :user => @current_user, :name => "leads_per_page", :value => Base64.encode64(Marshal.dump(42)))
-      @outline  = Factory(:preference, :user => @current_user, :name => "leads_outline",  :value => Base64.encode64(Marshal.dump("long")))
+      @outline  = Factory(:preference, :user => @current_user, :name => "leads_outline",  :value => Base64.encode64(Marshal.dump("option_long")))
       @sort_by  = Factory(:preference, :user => @current_user, :name => "leads_sort_by",  :value => Base64.encode64(Marshal.dump("leads.first_name ASC")))
-      @naming   = Factory(:preference, :user => @current_user, :name => "leads_naming",   :value => Base64.encode64(Marshal.dump("after")))
+      @naming   = Factory(:preference, :user => @current_user, :name => "leads_naming",   :value => Base64.encode64(Marshal.dump("option_after")))
 
       xhr :get, :options
       assigns[:per_page].should == 42
-      assigns[:outline].should  == "long"
-      assigns[:sort_by].should  == "first name"
-      assigns[:naming].should   == "after"
+      assigns[:outline].should  == "option_long"
+      assigns[:sort_by].should  == "leads.first_name ASC"
+      assigns[:naming].should   == "option_after"
     end
 
     it "should not assign instance variables when hiding options" do
@@ -935,7 +935,7 @@ describe LeadsController do
   #----------------------------------------------------------------------------
   describe "responding to POST redraw" do
     it "should save user selected lead preference" do
-      xhr :post, :redraw, :per_page => 42, :outline => "long", :sort_by => "first name", :naming => "after"
+      xhr :post, :redraw, :per_page => 42, :outline => "long", :sort_by => "first_name", :naming => "after"
       @current_user.preference[:leads_per_page].should == "42"
       @current_user.preference[:leads_outline].should  == "long"
       @current_user.preference[:leads_sort_by].should  == "leads.first_name ASC"
@@ -943,13 +943,13 @@ describe LeadsController do
     end
 
     it "should set similar options for Contacts" do
-      xhr :post, :redraw, :sort_by => "first name", :naming => "after"
+      xhr :post, :redraw, :sort_by => "first_name", :naming => "after"
       @current_user.pref[:contacts_sort_by].should == "contacts.first_name ASC"
       @current_user.pref[:contacts_naming].should == "after"
     end
 
     it "should reset current page to 1" do
-      xhr :post, :redraw, :per_page => 42, :outline => "long", :sort_by => "first name", :naming => "after"
+      xhr :post, :redraw, :per_page => 42, :outline => "long", :sort_by => "first_name", :naming => "after"
       session[:leads_current_page].should == 1
     end
 
@@ -959,7 +959,7 @@ describe LeadsController do
         Factory(:lead, :first_name => "Bobby", :user => @current_user)
       ]
 
-      xhr :post, :redraw, :per_page => 1, :sort_by => "first name"
+      xhr :post, :redraw, :per_page => 1, :sort_by => "first_name"
       assigns(:leads).should == [ @leads.first ]
       response.should render_template("leads/index")
     end

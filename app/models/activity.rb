@@ -39,12 +39,15 @@ class Activity < ActiveRecord::Base
   named_scope :except, lambda { |*actions| { :conditions => "action NOT IN (#{actions.join("','").wrap("'")})" } }
   named_scope :latest, lambda { |options|  {
     :conditions => [ "#{options[:asset] ? "subject_type = ?" : "0=?"} AND #{options[:user] ? "user_id = ?" : "0=?"} AND activities.created_at >= ?",
-      options[:asset] || 0, options[:user] || 0, Time.now - (options[:duration] || 2.days) ],
+      options[:asset] || 0, options[:user] || 0, Time.zone.now - (options[:duration] || 2.days) ],
     :include => :user,
     :order => "activities.created_at DESC"
   } }
 
   validates_presence_of :user, :subject
+
+  ASSETS = %w(all tasks campaigns leads accounts contacts opportunities).inject([]) { |arr, asset| arr << [ asset, I18n.t(asset) ] }
+  DURATION = %w(one_hour one_day two_days one_week two_weeks one_month).inject([]) { |arr, duration| arr << [ duration, I18n.t(duration) ] }
 
   #----------------------------------------------------------------------------
   def self.log(user, subject, action)

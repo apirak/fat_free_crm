@@ -178,7 +178,7 @@ class LeadsController < ApplicationController
     @users = User.except(@current_user).all
     @account, @opportunity, @contact = @lead.promote(params)
     @accounts = Account.my(@current_user).all(:order => "name")
-    @stage = Setting.as_hash(:opportunity_stage)
+    @stage = Setting.unroll(:opportunity_stage)
 
     respond_to do |format|
       if @account.errors.empty? && @opportunity.errors.empty? && @contact.errors.empty?
@@ -236,7 +236,6 @@ class LeadsController < ApplicationController
       @per_page = @current_user.pref[:leads_per_page] || Lead.per_page
       @outline  = @current_user.pref[:leads_outline]  || Lead.outline
       @sort_by  = @current_user.pref[:leads_sort_by]  || Lead.sort_by
-      @sort_by  = Lead::SORT_BY.invert[@sort_by]
       @naming   = @current_user.pref[:leads_naming]   || Lead.first_name_position
     end
   end
@@ -249,9 +248,9 @@ class LeadsController < ApplicationController
 
     # Sorting and naming only: set the same option for Contacts if the hasn't been set yet.
     if params[:sort_by]
-      @current_user.pref[:leads_sort_by] = Lead::SORT_BY[params[:sort_by]]
-      if Contact::SORT_BY.keys.include?(params[:sort_by])
-        @current_user.pref[:contacts_sort_by] ||= Contact::SORT_BY[params[:sort_by]]
+      @current_user.pref[:leads_sort_by] = Lead::sort_by_map[params[:sort_by]]
+      if Contact::sort_by_fields.include?(params[:sort_by])
+        @current_user.pref[:contacts_sort_by] ||= Contact::sort_by_map[params[:sort_by]]
       end
     end
     if params[:naming]
@@ -326,7 +325,7 @@ class LeadsController < ApplicationController
       instance_variable_set("@#{related}", @lead.send(related)) if called_from_landing_page?(related.to_s.pluralize)
     else
       @lead_status_total = { :all => Lead.my(@current_user).count, :other => 0 }
-      Setting.lead_status.keys.each do |key|
+      Setting.lead_status.each do |key|
         @lead_status_total[key] = Lead.my(@current_user).count(:conditions => [ "status=?", key.to_s ])
         @lead_status_total[:other] -= @lead_status_total[key]
       end
