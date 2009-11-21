@@ -93,22 +93,24 @@
 
   ul
     // :margin 0px 25%,  18% for 5th tab
+    :margin 0px 0px 0px 16px
 
   li
     :float left
     :font-size 12px
     :list-style none
-    :margin 0px 4px 0px 16px
-    :width = !size_tab_width
+    :margin 0px 4px 0px 0px
+    // :width = !size_tab_width
 
   a:link, a:visited
     :background = !color_tab_background
     :color white
     :float left
-    :padding 4px 8px 5px 8px
+    :padding 4px 16px 5px 16px
     :text-align center
     :text-decoration none
-    :width = !size_tab_width
+    :height 15px
+    // :width = !size_tab_width
     :-moz-border-radius
       :topleft 3px
       :topright 3px
