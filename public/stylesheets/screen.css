@@ -99,14 +99,12 @@ tt {
   text-align: center;
   width: 100%; }
   #tabs ul {
-    margin: 0px 0px 0px 16px;
-  }
+    margin: 0px 0px 0px 16px; }
   #tabs li {
     float: left;
     font-size: 12px;
     list-style: none;
-    margin: 0px 4px 0px 0px;
-  }
+    margin: 0px 4px 0px 0px; }
   #tabs a:link, #tabs a:visited {
     background: #466bb1;
     color: white;
@@ -290,7 +288,7 @@ tt {
   color: white !important; }
 
 .grayed {
-  color: silver; }
+  color: silver !important; }
 
 .strip {
   background: gainsboro;
