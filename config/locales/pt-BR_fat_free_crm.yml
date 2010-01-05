@@ -1,11 +1,17 @@
 pt-BR:
+  language: Português do Brasil
 
   # Generic terms.
   #----------------------------------------------------------------------------
   all: Tudo
-  language: Português do Brasil
+  at: at
+  here: aqui
+  no_button: 'Não'
   not_implemented: Ainda não implementado.
+  or: ou
+  select_blank: '-- Selecione --'
   select_none: '-- Nenhum --'
+  yes_button: 'Sim'
 
   # Settings.
   #----------------------------------------------------------------------------
@@ -153,6 +159,7 @@ pt-BR:
   msg_account_not_approved: Sua conta ainda não foi aprovada.
   msg_asset_deleted: "{{value}} foi removido."
   msg_asset_not_available: Este(a) {{value}} não está mais disponível.
+  msg_assets_not_available: The {{value}} are not available. # TODO
   msg_asset_rejected: "{{value}} foi rejeitado."
   msg_bad_image_file: "^Não foi possível enviar ou redimensionar a imagem que você escolheu."
   msg_cant_create_related: "Impossível criar {{asset}} já que {{related}} não está mais disponível."
@@ -218,7 +225,6 @@ pt-BR:
   first_name: Primeiro nome
   google: Google IM
   gravatar_help: Não conhece o Gravatar? Saiba mais sobre
-  here: aqui
   image_file: Arquivo de imagem
   image_help: A imagem que você enviar será automaticamente redimensionada para 75 x 75 pixels. Os formatos suportados são GIF, JPG, and PNG.
   job_title: Título
@@ -308,19 +314,18 @@ pt-BR:
   revenue_number: "{{value}} em receita"
   save_campaign: Salvar campanha
   start_date: Data de início
-  started_ago: iniciado a {{value}} atrás
+  started_ago: iniciou há {{value}} atrás
   starts_in: começa em {{value}}
   starts_today: começa hoje!
   target: Alvo
   total_campaigns: Total Campaigns
   was_supposed_to_finish: deveria ter terminado a {{value}}
-  was_supposed_to_start: deveria ter começado a {{time_ago}} atrás em {{start_date}}
+  was_supposed_to_start: deveria ter começado há {{time_ago}} atrás em {{start_date}}
     
   # Views -> Contacts.
   #----------------------------------------------------------------------------
   address: Endereço
   alt_email_small: Outro
-  at: at
   blog: Website/Blog
   contact: Contato
   contact_small: contato
@@ -375,7 +380,7 @@ pt-BR:
   #----------------------------------------------------------------------------
   amount: Valor
   close_date: Close date
-  closed_ago_on: fechado {{time_ago}} atrás em {{date}}
+  closed_ago_on: fechada há {{time_ago}} atrás em {{date}}
   closes_today: expected to close today!
   closing_date: closing date is {{value}}
   create_opportunity: Cria oportunidade
@@ -403,23 +408,6 @@ pt-BR:
   total_opportunities: Total Opportunities
   weighted_amount: Weighted amount
 
-  pluralize:
-    contact: 
-      one: '1 contato'
-      other: '{{count}} contatos'
-    opportunity:
-      one: '1 oportunidade'
-      other: '{{count}} oportunidades'
-    lead:
-      one: '1 lead'
-      other: '{{count}} leads'
-    day:
-      one: '1 dia'
-      other: '{{count}} dias'
-    login:
-      one: '1 login'
-      other: '{{count}} logins'
-  
   # Views -> Tasks.
   #----------------------------------------------------------------------------
   assign_to: Atribuida para
@@ -438,13 +426,13 @@ pt-BR:
   pending_tasks: Tarefas pendentes
   related: 're:'
   save_task: Salvar atividade
-  select_blank: '-- Selecione --'
   task_assigned: As tarefas foram atribuídas para {{value}}
   task_assigned_to: e artibuída para {{value}}
   task_completed: terminada
-  task_completed_by: terminada {{time_ago}} atrás por {{user}}
+  task_completed_ago: completed {{value}} ago # TODO
+  task_completed_by: terminada há {{time_ago}} atrás por {{user}}
   task_created: A tarea foi criada
-  task_due_in: due in
+  task_due_in: due in {{value}}
   task_due_later: due sometime soon
   task_due_now: vende
   task_due_today: due today
@@ -482,11 +470,9 @@ pt-BR:
   #----------------------------------------------------------------------------
   add_note: Adicionar nota
   add_note_help: Adicionar nova nota...
-  added: adicionado
-  added_by: adicionado {{time_ago}} atrás por {{user}} 
-  ago: atrás
+  added_ago: added {{value}} ago # TODO
+  added_by: adicionado(a) há {{time_ago}} atrás por {{user}} 
   back: Voltar
-  by: por
   cancel: Cancelar
   close_form: Fechar formulário
   confirm_delete: Tem certeza que deseja remover este {{value}}?
@@ -497,19 +483,17 @@ pt-BR:
   delete: Remover
   edit: Editar
   items_total: '{{count}} total.'
-  me: eu
+  me: mim
   n_a: N/A
   name: Nome
-  no_button: 'Não'
   no_match: 'No {{value}} match'
   no_recent_items: Não existem itens recentes para exibir ainda.
   options: Opções
-  or: ou
   permissions: Permissões
   please_retry: favor tente outra consulta.
   recent_items: Itens recentes
   search_assets: Buscar {{value}}
-  yes_button: 'Sim'
+  time_ago: "há {{value}} atrás"
 
   # Views -> Layout.
   #----------------------------------------------------------------------------
@@ -545,7 +529,7 @@ pt-BR:
   #----------------------------------------------------------------------------
   approve: Aprovar
   create_user: Novo usuário
-  last_seen: entrou pela última vez {{value}} atrás
+  last_seen: entrou pela última vez há {{value}} atrás
   personal_information: Informações Pessoais
   reactivate: Reativar
   save_user: Salvar usuário
@@ -562,3 +546,20 @@ pt-BR:
   user_suspended: Suspenso
   user_suspended_on: suspended on {{value}}
   users: Usuários
+
+  pluralize:
+    contact: 
+      one: '1 contato'
+      other: '{{count}} contatos'
+    opportunity:
+      one: '1 oportunidade'
+      other: '{{count}} oportunidades'
+    lead:
+      one: '1 lead'
+      other: '{{count}} leads'
+    day:
+      one: '1 dia'
+      other: '{{count}} dias'
+    login:
+      one: '1 login'
+      other: '{{count}} logins'

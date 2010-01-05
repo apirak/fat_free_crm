@@ -22,7 +22,7 @@ module ApplicationHelper
       @current_tab ||= tabs.first[:text] # Select first tab by default.
       tabs.each { |tab| tab[:active] = (@current_tab == tab[:text] || @current_tab == tab[:url][:controller]) }
     else
-      raise RuntimeError.new("Tab settings are missing, please run 'rake crm:setup'")
+      raise FatFreeCRM::MissingSettings, "Tab settings are missing, please run <b>rake crm:setup</b> command."
     end
   end
   
@@ -175,11 +175,6 @@ module ApplicationHelper
     image_tag "1x1.gif", :width => width, :height => 1, :alt => nil
   end
 
-  #----------------------------------------------------------------------------
-  def time_ago(whenever)
-    distance_of_time_in_words(Time.now, whenever) << " " << t(:ago)
-  end
-
   # Reresh sidebar using the action view within the current controller.
   #----------------------------------------------------------------------------
   def refresh_sidebar(action = nil, shake = nil)
@@ -277,6 +272,14 @@ module ApplicationHelper
   #----------------------------------------------------------------------------
   def default_avatar_url
     "#{request.protocol + request.host_with_port}" + Setting.base_url.to_s + "/images/avatar.jpg"
+  end
+
+  # Returns true if partial template exists. Note that the file name of the
+  # partial starts with underscore.
+  #----------------------------------------------------------------------------
+  def partial_exist?(partial, extension = '.html.haml')
+    filename = partial.sub(%r{/([^/]*)$}, '/_\\1') + extension
+    FileTest.exist?(File.join(RAILS_ROOT, 'app', 'views', filename))
   end
 
 end

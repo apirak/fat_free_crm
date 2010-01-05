@@ -16,29 +16,18 @@
 #------------------------------------------------------------------------------
 
 module FatFreeCRM
-  class Tabs
-    cattr_accessor :main
-    cattr_accessor :admin
+  class MissingSettings < StandardError; end
+  class ObsoleteSettings < StandardError; end
+end
 
-    # Class methods.
-    #----------------------------------------------------------------------------
-    def self.main
-      @@main || reload!(:main)
-    end
+class ActionController::Base
+  rescue_from FatFreeCRM::MissingSettings,  :with => :render_fat_free_crm_exception
+  rescue_from FatFreeCRM::ObsoleteSettings, :with => :render_fat_free_crm_exception
 
-    def self.admin
-      @@admin || reload!(:admin)
-    end
-
-    # Make it possible to reload tabs (:main, :admin, or both).
-    #----------------------------------------------------------------------------
-    def self.reload!(main_or_admin = nil)
-      case main_or_admin
-        when :main  then @@main  = Setting[:tabs]
-        when :admin then @@admin = Setting[:admin_tabs]
-        when nil    then @@main  = Setting[:tabs]; @@admin = Setting[:admin_tabs]
-      end
-    end
-
+  private
+  
+  def render_fat_free_crm_exception(exception)
+    log_error(exception)
+    render :layout => false, :template => "/layouts/500.html.haml", :status => 500, :locals => { :exception => exception }
   end
 end
